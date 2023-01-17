@@ -8,26 +8,81 @@
             {
                 const string filePath = @"C:\2022 projects\DotNet\AdventOfCode_2022\DayTwo\Inputs\input.txt";
 
-                var rockPaperScissorsInput = File.ReadAllLines(filePath);
+                //Part one
+                PartOne(filePath);
 
-                int totalScore = 0;
-
-                foreach (string line in rockPaperScissorsInput)
-                {
-                    string myShape = MapInputCharToShape(line[2]);
-                    string opponentShape = MapInputCharToShape(line[0]);
-
-                    int roundScore = ScoreRound(myShape, opponentShape);
-                    totalScore += roundScore;
-                    //Console.WriteLine($"My Shape: {myShape} Opponent Shape: {opponentShape} = {roundScore}");
-
-                }
-                Console.WriteLine($"My Total Score: {totalScore}");
+                //Part two
+                PartTwo(filePath);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        static void PartOne(string filePath)
+        {
+            var rockPaperScissorsInput = File.ReadAllLines(filePath);
+
+            int totalScore = 0;
+
+            foreach (string line in rockPaperScissorsInput)
+            {
+                string myShape = MapInputCharToShape(line[2]);
+                string opponentShape = MapInputCharToShape(line[0]);
+
+                int roundScore = ScoreRound(myShape, opponentShape);
+                totalScore += roundScore;
+                //Console.WriteLine($"My Shape: {myShape} Opponent Shape: {opponentShape} = {roundScore}");
+
+            }
+            Console.WriteLine($"My Total Score: {totalScore} -> Part One");
+        }
+
+        static void PartTwo(string filePath)
+        {
+            var rockPaperScissorsInput = File.ReadAllLines(filePath);
+
+            int totalScore = 0;
+
+            foreach (string line in rockPaperScissorsInput)
+            {
+                string myShape = MapInputCharToShape(line[2]);
+                string opponentShape = MapInputCharToShape(line[0]);
+
+                int points = 0;
+
+                //Need to lose
+                if (myShape == "Rock")
+                {
+                    //if opponent choses max value, I need to choose less value
+                    if (opponentShape == "Paper")
+                    {
+                        points += MapShapeToScore("Rock");
+                        totalScore += points;
+                    }
+                    
+                }
+
+                //End in a draw
+                if (myShape == "Paper")
+                {
+                    //get opponent selection and make it my selection
+                    points += MapShapeToScore(opponentShape);
+                    points += 3;
+                    totalScore += points;
+                }
+
+                //Need to win
+                if (myShape == "Scissors")
+                {
+                    points += MapShapeToScore("Rock");
+                    points += 6;
+                    totalScore += points;
+                }
+                
+            }
+            Console.WriteLine($"My Total Score: {totalScore} -> Part Two");
         }
 
         static string MapInputCharToShape(char character)
